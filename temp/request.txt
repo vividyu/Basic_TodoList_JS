@@ -1,0 +1,4 @@
+curl --request GET \
+  --url 'https://api.themoviedb.org/4/list/1' \
+  --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyZjM5YWM4YWJmNjA3ZmJiYzU4M2NlMzkzYzBmNTZmMyIsInN1YiI6IjY0MThiYWRiZmU1YzkxMDA4M2JkZTFlNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.zPutmKSJJHTp8AxSAPJQcFq6JSCvcgUZTR3C7DDftSA' \
+  --header 'Content-Type: application/json;charset=utf-8'
