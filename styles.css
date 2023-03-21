@@ -4,6 +4,12 @@ body {
     color: black;
 }
 
+.movie-icon {
+    font-size: 50px;
+    color: #333;
+    margin-right: 10px;
+  }
+
 nav ul {
     display: flex;
     list-style-type: none;
@@ -35,6 +41,11 @@ nav a.active {
     display: none;
 }
 
+.button-container {
+    display: flex;
+    list-style-type: none;
+    padding: 0;
+}
 
 /* Style the image container */
 .image-container {

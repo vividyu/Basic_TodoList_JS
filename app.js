@@ -52,14 +52,24 @@ const getMovieInfo = async (page) => {
 const pagination = async () => {
   const prevButton = document.getElementById('prev-button');
   const nextButton = document.getElementById('next-button');
+  const pageNum = document.getElementById('page-num');
+  const TotalPages = document.getElementById('total-pages');
+  const TotalRes = document.getElementById('total-results');
 
   let page = 1;
   //get page 1 by default
+  pageNum.textContent = page;
+
   const { total_pages, total_results } = await getMovieInfo(page);
+  TotalPages.textContent = total_pages;
+  TotalRes.textContent = total_results;
 
   prevButton.addEventListener('click', async () => {
     page--;
-    if (page < 1) alert("page error: page=" + page);
+    if (page < 1) {
+      throw new Error("page error: page=" + page);
+    }
+    pageNum.textContent = page;
     prevButton.disabled = page <= 1;
     nextButton.disabled = page >= 1000;
     await getMovieInfo(page);
@@ -68,6 +78,7 @@ const pagination = async () => {
   // Add event listener to the next button
   nextButton.addEventListener('click', async () => {
     page++;
+    pageNum.textContent = page;
     prevButton.disabled = page <= 1;
     nextButton.disabled = page >= total_pages;
     await getMovieInfo(page);

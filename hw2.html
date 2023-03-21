@@ -3,13 +3,16 @@
 
 <head>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HW2</title>
 </head>
 
 <body>
-    <header></header>
+    <header>
+        <i class="fas fa-film movie-icon"></i>
+    </header>
     <nav>
         <ul>
             <li><a href="#" class="tab-link" data-tab="1">Movies List</a></li>
@@ -17,13 +20,25 @@
         </ul>
     </nav>
 
-    
+
 
     <div class="tab-content-container">
         <div class="tab-content" id="tab-1">
             <h2>The Trending Movies This Week</h2>
-            <button id="prev-button" disabled>Previous</button>
-            <button id="next-button">Next</button>
+            <ul class="button-container">
+                <button id="prev-button" disabled>Previous</button>
+                <p>
+                    <span>Page </span>
+                    <span id="page-num">0</span>
+                    <span>/Total </span>
+                    <span id="total-pages">0</span>
+                    <span> of </span>
+                    <span id="total-results">0</span>
+                    <span> Results </span>
+
+                </p>
+                <button id="next-button">Next</button>
+            </ul>
             <div class="image-container"></div>
         </div>
         <div class="tab-content" id="tab-2">
