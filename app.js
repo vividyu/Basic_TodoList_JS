@@ -110,3 +110,27 @@ const removeTodoElement = async (event, element) => {
   await deleteTodoItem(id);
 };
 
+document.addEventListener('DOMContentLoaded', function () {
+  const tabLinks = document.querySelectorAll('.tab-link');
+  const tabContents = document.querySelectorAll('.tab-content');
+  const backgroundColors = ['#f0f8ff', '#f5f5dc', '#f0e68c'];
+
+  tabLinks.forEach(link => {
+    link.addEventListener('click', function (event) {
+      event.preventDefault();
+
+      tabLinks.forEach(link => link.classList.remove('active'));
+      event.target.classList.add('active');
+
+      const tabId = event.target.getAttribute('data-tab');
+      tabContents.forEach(content => {
+        content.style.display = content.id === `tab-${tabId}` ? 'block' : 'none';
+      });
+
+      document.body.style.backgroundColor = backgroundColors[tabId - 1];
+    });
+  });
+
+  // Activate the first tab by default
+  tabLinks[0].click();
+});
