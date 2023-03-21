@@ -1,141 +1,67 @@
 import 'regenerator-runtime/runtime';
 import axios from 'axios';
+import { consumers } from 'stream';
 
 const api_key = "2f39ac8abf607fbbc583ce393c0f56f3";
-const BASE_URL = `https://api.themoviedb.org/3/trending/all/day?api_key=${api_key}`;
+const BASE_URL = `https://api.themoviedb.org/3/trending/movie/week?`;
 const CONFIG_URL = `https://api.themoviedb.org/3/configuration?api_key=${api_key}`;
 
-
-// Get the image container element
-// const imageContainer = document.querySelector('.image-container');
-
-// Make a GET request to the API
-// fetch(apiUrl)
-//   .then(response => response.json())
-//   .then(data => {
-//     // Loop through the image URLs and create <img> elements
-//     data.forEach(imageUrl => {
-//       const image = document.createElement('img');
-//       image.src = imageUrl;
-//       image.classList.add('image');
-//       imageContainer.appendChild(image);
-//     });
-//   })
-//   .catch(error => console.error(error));
-
-const getMovieInfo = async () => {
+const getMovieInfo = async (page) => {
   try {
+    const imageContainer = document.querySelector('.image-container');
+    imageContainer.innerHTML = '';
+
     const config = await axios.get(CONFIG_URL);
     const cfgdata = config.data.images;
     const imgUrlPrefix = cfgdata.base_url + cfgdata.poster_sizes[4];
-    console.log(imgUrlPrefix);
+    //console.log("imgUrlPrefix=" + imgUrlPrefix);
 
-    const response = await axios.get(BASE_URL);
+    const listUrl = `${BASE_URL}page=${page}&api_key=${api_key}`;
+    const response = await axios.get(listUrl);
+    //console.log(response);
     const res = response.data.results;
-    
+
     res.forEach(detail => {
       const imgUrl = detail.poster_path;
-      console.log(imgUrl);
-
-      const imageContainer = document.querySelector('.image-container');
       const image = document.createElement('img');
-      image.src = imgUrlPrefix+imgUrl;
+      image.src = imgUrlPrefix + imgUrl;
       image.classList.add('image');
       imageContainer.appendChild(image);
     })
-    const todoItems = response.results;
+    const ret = response.results;
 
-    return todoItems;
+    return ret;
   } catch (errors) {
     console.error(errors);
   }
 };
 
 
+const pagination = async () => {
+  const prevButton = document.getElementById('prev-button');
+  const nextButton = document.getElementById('next-button');
 
-// const createTodoElement = item => {
-//   const todoElement = document.createElement('li');
+  let page = 1;
+  await getMovieInfo(page);
 
-//   todoElement.id = item.id;
-//   todoElement.appendChild(document.createTextNode(item.title));
+  prevButton.addEventListener('click', async () => {
+    page--;
+    if (page < 1) aler("page error: " + page);
+    prevButton.disabled = page === 1;
+    nextButton.disabled = page >= 1000;
+    await getMovieInfo(page);
+  });
 
-//   todoElement.onclick = async event => await removeTodoElement(event, todoElement);
+  // Add event listener to the next button
+  nextButton.addEventListener('click', async () => {
+    page++;
+    prevButton.disabled = page === 1;
+    nextButton.disabled = page >= 10;
+    await getMovieInfo(page);
+  });
+}
 
-//   return todoElement;
-// };
-
-
-const updateTodoList = todoItems => {
-  const todoList = document.querySelector('.image-container');
-
-  if (Array.isArray(todoItems) && todoItems.length > 0) {
-    todoItems.map(todoItem => {
-      todoList.appendChild(createTodoElement(todoItem));
-    });
-  } else if (todoItems) {
-    todoList.appendChild(createTodoElement(todoItems));
-  }
-};
-
-const main = async () => {
-  updateTodoList(await getMovieInfo());
-};
-
-main();
-
-
-// const form = document.querySelector('form');
-
-// form.addEventListener('submit', async event => {
-//   event.preventDefault();
-
-//   const title = document.querySelector('#new-todos__title').value;
-
-//   const todo = {
-//     userId: 1,
-//     title: title,
-//     completed: false
-//   };
-
-//   const submitTodoItem = await addTodoItem(todo);
-//   updateTodoList(submitTodoItem);
-// });
-
-// ...
-
-export const addTodoItem = async todo => {
-  try {
-    const response = await axios.post(`${BASE_URL}/todos`, todo);
-    const newTodoItem = response.data;
-
-    console.log(`Added a new Todo!`, newTodoItem);
-
-    return newTodoItem;
-  } catch (errors) {
-    console.error(errors);
-  }
-};
-
-// export const deleteTodoItem = async id => {
-//   try {
-//     const response = await axios.delete(`${BASE_URL}/todos/${id}`);
-//     console.log(`Deleted Todo ID: `, id);
-
-//     return response.data;
-//   } catch (errors) {
-//     console.error(errors);
-//   }
-// };
-
-
-// const removeTodoElement = async (event, element) => {
-//   event.target.parentElement.removeChild(element);
-//   const id = element.id;
-
-//   await deleteTodoItem(id);
-// };
-
-document.addEventListener('DOMContentLoaded', function () {
+const tab = document.addEventListener('DOMContentLoaded', function () {
   const tabLinks = document.querySelectorAll('.tab-link');
   const tabContents = document.querySelectorAll('.tab-content');
 
@@ -157,3 +83,10 @@ document.addEventListener('DOMContentLoaded', function () {
   // Activate the first tab by default
   tabLinks[0].click();
 });
+
+const main = async () => {
+  pagination();
+}
+main();
+
+
