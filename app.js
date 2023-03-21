@@ -1,17 +1,49 @@
 import 'regenerator-runtime/runtime';
 import axios from 'axios';
 
-// ...
+const api_key = "2f39ac8abf607fbbc583ce393c0f56f3";
+const BASE_URL = `https://api.themoviedb.org/3/trending/all/day?api_key=${api_key}`;
+const CONFIG_URL = `https://api.themoviedb.org/3/configuration?api_key=${api_key}`;
 
-const BASE_URL = 'https://jsonplaceholder.typicode.com';
 
-const getTodoItems = async () => {
+// Get the image container element
+// const imageContainer = document.querySelector('.image-container');
+
+// Make a GET request to the API
+// fetch(apiUrl)
+//   .then(response => response.json())
+//   .then(data => {
+//     // Loop through the image URLs and create <img> elements
+//     data.forEach(imageUrl => {
+//       const image = document.createElement('img');
+//       image.src = imageUrl;
+//       image.classList.add('image');
+//       imageContainer.appendChild(image);
+//     });
+//   })
+//   .catch(error => console.error(error));
+
+const getMovieInfo = async () => {
   try {
-    const response = await axios.get(`${BASE_URL}/todos?_limit=5`);
+    const config = await axios.get(CONFIG_URL);
+    const cfgdata = config.data.images;
+    const imgUrlPrefix = cfgdata.base_url + cfgdata.poster_sizes[4];
+    console.log(imgUrlPrefix);
 
-    const todoItems = response.data;
+    const response = await axios.get(BASE_URL);
+    const res = response.data.results;
+    
+    res.forEach(detail => {
+      const imgUrl = detail.poster_path;
+      console.log(imgUrl);
 
-    console.log(`GET: Here's the list of todos`, todoItems);
+      const imageContainer = document.querySelector('.image-container');
+      const image = document.createElement('img');
+      image.src = imgUrlPrefix+imgUrl;
+      image.classList.add('image');
+      imageContainer.appendChild(image);
+    })
+    const todoItems = response.results;
 
     return todoItems;
   } catch (errors) {
@@ -19,25 +51,22 @@ const getTodoItems = async () => {
   }
 };
 
-// ...
 
-// ...
 
-const createTodoElement = item => {
-  const todoElement = document.createElement('li');
+// const createTodoElement = item => {
+//   const todoElement = document.createElement('li');
 
-  todoElement.id = item.id;
-  todoElement.appendChild(document.createTextNode(item.title));
+//   todoElement.id = item.id;
+//   todoElement.appendChild(document.createTextNode(item.title));
 
-  todoElement.onclick = async event => await removeTodoElement(event, todoElement);
+//   todoElement.onclick = async event => await removeTodoElement(event, todoElement);
 
-  return todoElement;
-};
+//   return todoElement;
+// };
 
-// ...
 
 const updateTodoList = todoItems => {
-  const todoList = document.querySelector('ul');
+  const todoList = document.querySelector('.image-container');
 
   if (Array.isArray(todoItems) && todoItems.length > 0) {
     todoItems.map(todoItem => {
@@ -49,29 +78,28 @@ const updateTodoList = todoItems => {
 };
 
 const main = async () => {
-  updateTodoList(await getTodoItems());
+  updateTodoList(await getMovieInfo());
 };
 
 main();
 
-// ...
 
-const form = document.querySelector('form');
+// const form = document.querySelector('form');
 
-form.addEventListener('submit', async event => {
-  event.preventDefault();
+// form.addEventListener('submit', async event => {
+//   event.preventDefault();
 
-  const title = document.querySelector('#new-todos__title').value;
+//   const title = document.querySelector('#new-todos__title').value;
 
-  const todo = {
-    userId: 1,
-    title: title,
-    completed: false
-  };
+//   const todo = {
+//     userId: 1,
+//     title: title,
+//     completed: false
+//   };
 
-  const submitTodoItem = await addTodoItem(todo);
-  updateTodoList(submitTodoItem);
-});
+//   const submitTodoItem = await addTodoItem(todo);
+//   updateTodoList(submitTodoItem);
+// });
 
 // ...
 
@@ -88,32 +116,28 @@ export const addTodoItem = async todo => {
   }
 };
 
-// ...
+// export const deleteTodoItem = async id => {
+//   try {
+//     const response = await axios.delete(`${BASE_URL}/todos/${id}`);
+//     console.log(`Deleted Todo ID: `, id);
 
-export const deleteTodoItem = async id => {
-  try {
-    const response = await axios.delete(`${BASE_URL}/todos/${id}`);
-    console.log(`Deleted Todo ID: `, id);
+//     return response.data;
+//   } catch (errors) {
+//     console.error(errors);
+//   }
+// };
 
-    return response.data;
-  } catch (errors) {
-    console.error(errors);
-  }
-};
 
-// ...
+// const removeTodoElement = async (event, element) => {
+//   event.target.parentElement.removeChild(element);
+//   const id = element.id;
 
-const removeTodoElement = async (event, element) => {
-  event.target.parentElement.removeChild(element);
-  const id = element.id;
-
-  await deleteTodoItem(id);
-};
+//   await deleteTodoItem(id);
+// };
 
 document.addEventListener('DOMContentLoaded', function () {
   const tabLinks = document.querySelectorAll('.tab-link');
   const tabContents = document.querySelectorAll('.tab-content');
-  const backgroundColors = ['#f0f8ff', '#f5f5dc', '#f0e68c'];
 
   tabLinks.forEach(link => {
     link.addEventListener('click', function (event) {
@@ -127,7 +151,6 @@ document.addEventListener('DOMContentLoaded', function () {
         content.style.display = content.id === `tab-${tabId}` ? 'block' : 'none';
       });
 
-      document.body.style.backgroundColor = backgroundColors[tabId - 1];
     });
   });
 

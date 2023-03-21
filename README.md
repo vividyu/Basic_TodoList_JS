@@ -2,6 +2,8 @@
 https://github.com/vividyu/usc_hw2
 
 ## API Docs:
+https://developers.themoviedb.org/3/getting-started/introduction
+
 https://developers.themoviedb.org/4/getting-started/authorization
 
 ## API Key (v3 auth)
@@ -11,6 +13,8 @@ https://developers.themoviedb.org/4/getting-started/authorization
 ### Example API Request
 ```
 https://api.themoviedb.org/3/movie/550?api_key=2f39ac8abf607fbbc583ce393c0f56f3
+
+http://image.tmdb.org/t/p/w500/bPVqWiVxjXDzJOfvwGVyDOUydH5.jpg
 ```
 
 ## API Read Access Token (v4 auth):
