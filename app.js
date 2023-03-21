@@ -6,20 +6,32 @@ const api_key = "2f39ac8abf607fbbc583ce393c0f56f3";
 const BASE_URL = `https://api.themoviedb.org/3/trending/movie/week?`;
 const CONFIG_URL = `https://api.themoviedb.org/3/configuration?api_key=${api_key}`;
 
+const getImgUrlPrefix = async () => {
+  try {
+    const config = await axios.get(CONFIG_URL);
+    const cfgdata = config.data.images;
+    const imgUrlPrefix = cfgdata.base_url + cfgdata.poster_sizes[4];
+
+    return imgUrlPrefix;
+
+  } catch (errors) {
+    console.error(errors);
+  }
+};
+
 const getMovieInfo = async (page) => {
   try {
     const imageContainer = document.querySelector('.image-container');
     imageContainer.innerHTML = '';
 
-    const config = await axios.get(CONFIG_URL);
-    const cfgdata = config.data.images;
-    const imgUrlPrefix = cfgdata.base_url + cfgdata.poster_sizes[4];
-    //console.log("imgUrlPrefix=" + imgUrlPrefix);
+    const imgUrlPrefix = await getImgUrlPrefix();
 
     const listUrl = `${BASE_URL}page=${page}&api_key=${api_key}`;
     const response = await axios.get(listUrl);
-    //console.log(response);
+
     const res = response.data.results;
+    const total_pages = response.data.total_pages;
+    const total_results = response.data.total_results;
 
     res.forEach(detail => {
       const imgUrl = detail.poster_path;
@@ -28,9 +40,9 @@ const getMovieInfo = async (page) => {
       image.classList.add('image');
       imageContainer.appendChild(image);
     })
-    const ret = response.results;
 
-    return ret;
+    return { total_pages, total_results };
+
   } catch (errors) {
     console.error(errors);
   }
@@ -42,12 +54,13 @@ const pagination = async () => {
   const nextButton = document.getElementById('next-button');
 
   let page = 1;
-  await getMovieInfo(page);
+  //get page 1 by default
+  const { total_pages, total_results } = await getMovieInfo(page);
 
   prevButton.addEventListener('click', async () => {
     page--;
-    if (page < 1) aler("page error: " + page);
-    prevButton.disabled = page === 1;
+    if (page < 1) alert("page error: page=" + page);
+    prevButton.disabled = page <= 1;
     nextButton.disabled = page >= 1000;
     await getMovieInfo(page);
   });
@@ -55,8 +68,8 @@ const pagination = async () => {
   // Add event listener to the next button
   nextButton.addEventListener('click', async () => {
     page++;
-    prevButton.disabled = page === 1;
-    nextButton.disabled = page >= 10;
+    prevButton.disabled = page <= 1;
+    nextButton.disabled = page >= total_pages;
     await getMovieInfo(page);
   });
 }
