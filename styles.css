@@ -48,6 +48,7 @@ nav a.active {
     justify-content: space-between;
     align-items: center;
     gap: 10px;
+    width: 95%;
 }
 
 .button-container button {
@@ -60,10 +61,32 @@ nav a.active {
     flex-wrap: wrap;
 }
 
-/* Style the images */
-.image {
-    width: 18%;
+.movie-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     height: auto;
+    width: 18%;
     object-fit: cover;
     margin: 10px;
+}
+
+/* Style the images */
+.movie-item img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.movie-title {
+    font-weight: bold;
+    font-family: "Times New Roman", Times, serif;
+    font-size: medium;
+    margin: 0px;
+}
+
+.release-date {
+    font-family: "Times New Roman", Times, serif;
+    font-size: small;
+    margin: 0px;
 }
