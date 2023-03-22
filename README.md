@@ -27,9 +27,15 @@ https://developers.themoviedb.org/4/getting-started/authorization
 ```
 #### Example API Request
 ```
-https://api.themoviedb.org/3/movie/550?api_key=2f39ac8abf607fbbc583ce393c0f56f3
+https://api.themoviedb.org/3/trending/movie/week?&api_key=2f39ac8abf607fbbc583ce393c0f56f3
+https://api.themoviedb.org/3/configuration?api_key=2f39ac8abf607fbbc583ce393c0f56f3
 
+```
+
+### Image Address Example
+```
 http://image.tmdb.org/t/p/w500/bPVqWiVxjXDzJOfvwGVyDOUydH5.jpg
+https://image.tmdb.org/t/p/original//tt79dbOPd9Z9ykEOpvckttgYXwH.jpg
 ```
 
 ### API Read Access Token (v4 auth):

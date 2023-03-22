@@ -6,7 +6,7 @@ const api_key = "2f39ac8abf607fbbc583ce393c0f56f3";
 const BASE_URL = `https://api.themoviedb.org/3/trending/movie/week?`;
 const CONFIG_URL = `https://api.themoviedb.org/3/configuration?api_key=${api_key}`;
 
-const getImgUrlPrefix = async (poster_sz = 4, bg_sz = 2) => {
+const getImgUrlPrefix = async (poster_sz = 4, bg_sz = 3) => {
   try {
     const config = await axios.get(CONFIG_URL);
     const cfgdata = config.data.images;
@@ -14,6 +14,8 @@ const getImgUrlPrefix = async (poster_sz = 4, bg_sz = 2) => {
 
     const posterUrlPrefix = cfgdata.secure_base_url + cfgdata.poster_sizes[poster_sz];
     const bgUrlPrefix = cfgdata.secure_base_url + cfgdata.backdrop_sizes[bg_sz];
+
+    console.log(bgUrlPrefix);
 
     return { posterUrlPrefix, bgUrlPrefix };
 
@@ -29,7 +31,7 @@ const generatePosterFrame = async (page = 1) => {
 
     const listUrl = `${BASE_URL}page=${page}&api_key=${api_key}`;
     const response = await axios.get(listUrl);
-    //console.log(response);//test log
+    console.log(response);//test log
 
     const res = response.data.results;
     const total_pages = response.data.total_pages;
@@ -107,39 +109,44 @@ const updateMovieInfo = async (page = 1) => {
 
 
 const pagination = async () => {
-  const prevButton = document.getElementById('prev-button');
-  const nextButton = document.getElementById('next-button');
-  const pageNum = document.getElementById('page-num');
-  const TotalPages = document.getElementById('total-pages');
-  const TotalRes = document.getElementById('total-results');
+  try {
+    const prevButton = document.getElementById('prev-button');
+    const nextButton = document.getElementById('next-button');
+    const pageNum = document.getElementById('page-num');
+    const TotalPages = document.getElementById('total-pages');
+    const TotalRes = document.getElementById('total-results');
 
-  let page = 1;
-  //get page 1 by default
-  pageNum.textContent = page;
-
-  const { total_pages, total_results } = await updateMovieInfo(page);
-  TotalPages.textContent = total_pages;
-  TotalRes.textContent = total_results;
-
-  prevButton.addEventListener('click', async () => {
-    page--;
-    if (page < 1) {
-      throw new Error("page error: page=" + page);
-    }
+    let page = 1;
+    //get page 1 by default
     pageNum.textContent = page;
-    prevButton.disabled = page <= 1;
-    nextButton.disabled = page >= 1000;
-    await updateMovieInfo(page);
-  });
 
-  // Add event listener to the next button
-  nextButton.addEventListener('click', async () => {
-    page++;
-    pageNum.textContent = page;
-    prevButton.disabled = page <= 1;
-    nextButton.disabled = page >= total_pages;
-    await updateMovieInfo(page);
-  });
+    const { total_pages, total_results } = await updateMovieInfo(page);
+    TotalPages.textContent = total_pages;
+    TotalRes.textContent = total_results;
+
+    prevButton.addEventListener('click', async () => {
+      page--;
+      if (page < 1) {
+        throw new Error("page error: page=" + page);
+      }
+      pageNum.textContent = page;
+      prevButton.disabled = page <= 1;
+      nextButton.disabled = page >= 1000;
+      await updateMovieInfo(page);
+    });
+
+    // Add event listener to the next button
+    nextButton.addEventListener('click', async () => {
+      page++;
+      pageNum.textContent = page;
+      prevButton.disabled = page <= 1;
+      nextButton.disabled = page >= total_pages;
+      await updateMovieInfo(page);
+    });
+  } catch (errors) {
+    console.error(errors);
+  }
+
 }
 
 function loadTabs() {
@@ -158,23 +165,36 @@ function loadTabs() {
         tabContents.forEach(content => {
           content.style.display = content.id === `tab-${tabId}` ? 'block' : 'none';
         });
-
       });
     });
     // Activate the first tab by default
     tabLinks[0].click();
   });
+
 }
 
 const listenPoster = async () => {
-  const imageContainer = document.querySelector('.image-container');
-  const posterAll = imageContainer.querySelectorAll('img');
+  try {
+    const imageContainer = document.querySelector('.image-container');
+    const posterAll = imageContainer.querySelectorAll('img');
 
-  posterAll.forEach(poster => {
-    poster.addEventListener('click', () => {
-      console.log(poster.className);
+    posterAll.forEach(poster => {
+      poster.addEventListener('click', () => {
+        console.log(poster.className);
+      });
     });
-  });
+  } catch (errors) {
+    console.error(errors);
+  }
+}
+
+const showDetails = async () => {
+  try {
+    const bgContainer = document.querySelector('.bg-container');
+    //
+  } catch (errors) {
+    console.error(errors);
+  }
 }
 
 const main = async () => {
