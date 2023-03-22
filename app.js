@@ -5,8 +5,9 @@ import { consumers } from 'stream';
 const api_key = "2f39ac8abf607fbbc583ce393c0f56f3";
 const BASE_URL = `https://api.themoviedb.org/3/trending/movie/week?`;
 const CONFIG_URL = `https://api.themoviedb.org/3/configuration?api_key=${api_key}`;
+const LOADING_GIF = 'https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif';
 
-const getImgUrlPrefix = async (poster_sz = 4, bg_sz = 3) => {
+const getImgUrlPrefix = async (poster_sz = 4, bg_sz = 2) => {
   try {
     const config = await axios.get(CONFIG_URL);
     const cfgdata = config.data.images;
@@ -15,7 +16,7 @@ const getImgUrlPrefix = async (poster_sz = 4, bg_sz = 3) => {
     const posterUrlPrefix = cfgdata.secure_base_url + cfgdata.poster_sizes[poster_sz];
     const bgUrlPrefix = cfgdata.secure_base_url + cfgdata.backdrop_sizes[bg_sz];
 
-    console.log(bgUrlPrefix);
+    //console.log(bgUrlPrefix);
 
     return { posterUrlPrefix, bgUrlPrefix };
 
@@ -45,7 +46,7 @@ const generatePosterFrame = async (page = 1) => {
 
       item.className = `movie-item`;
 
-      image.src = 'https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif';
+      image.src = LOADING_GIF;
       image.classList.add('image');
       image.className = `img_loading`;
 
@@ -179,8 +180,10 @@ const listenPoster = async () => {
     const posterAll = imageContainer.querySelectorAll('img');
 
     posterAll.forEach(poster => {
-      poster.addEventListener('click', () => {
-        console.log(poster.className);
+      poster.addEventListener('click', async () => {
+        const movid = poster.className.replace(/\D/g, '');
+        //console.log(movid);
+        await showDetails(movid);
       });
     });
   } catch (errors) {
@@ -188,10 +191,33 @@ const listenPoster = async () => {
   }
 }
 
-const showDetails = async () => {
+const showDetails = async (movid) => {
   try {
+    const MOV_URL = `https://api.themoviedb.org/3/movie/${movid}?api_key=${api_key}&language=en-US`;
     const bgContainer = document.querySelector('.bg-container');
-    //
+    const bgContent = document.querySelector('.bg-content');
+    const bg = document.querySelector('.bg');
+
+    bgContainer.addEventListener('click', async () => {
+      bgContainer.style.display = 'none';
+    });
+
+    const response = await axios.get(MOV_URL);
+
+    let poster_sz = 4;
+    let bg_sz = 2;
+    const { posterUrlPrefix, bgUrlPrefix } = await getImgUrlPrefix(poster_sz, bg_sz);
+
+    const posterUrl = posterUrlPrefix + response.data.poster_path;
+    const bgUrl = bgUrlPrefix + response.data.backdrop_path;
+
+    //console.log(bgUrl);//test log
+    bg.setAttribute('src', bgUrl);
+
+    //bgContainer.style.opacity = 0.5;
+    bgContainer.style.display = 'flex';
+
+
   } catch (errors) {
     console.error(errors);
   }

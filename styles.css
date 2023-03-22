@@ -22,7 +22,7 @@ nav li {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    align-items:center;
+    align-items: center;
     padding: 10px;
     /* margin-right: auto; */
 }
@@ -96,4 +96,27 @@ nav a.active {
     font-family: "Times New Roman", Times, serif;
     font-size: small;
     margin: 0px;
+}
+
+.bg-container {
+    display: none;
+    position: fixed;
+    align-items: center;
+    justify-content: center;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    background-color: #fff;
+    z-index: 9999;
+}
+
+.bg-container img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.bg {
+    opacity: 0.6;
 }
