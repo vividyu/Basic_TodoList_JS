@@ -35,7 +35,7 @@ https://api.themoviedb.org/3/configuration?api_key=2f39ac8abf607fbbc583ce393c0f5
 ### Image Address Example
 ```
 http://image.tmdb.org/t/p/w500/bPVqWiVxjXDzJOfvwGVyDOUydH5.jpg
-https://image.tmdb.org/t/p/original//tt79dbOPd9Z9ykEOpvckttgYXwH.jpg
+https://image.tmdb.org/t/p/original/tt79dbOPd9Z9ykEOpvckttgYXwH.jpg
 ```
 
 ### API Read Access Token (v4 auth):
