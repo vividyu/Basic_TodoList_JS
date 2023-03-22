@@ -6,13 +6,16 @@ const api_key = "2f39ac8abf607fbbc583ce393c0f56f3";
 const BASE_URL = `https://api.themoviedb.org/3/trending/movie/week?`;
 const CONFIG_URL = `https://api.themoviedb.org/3/configuration?api_key=${api_key}`;
 
-const getImgUrlPrefix = async (imgsize) => {
+const getImgUrlPrefix = async (poster_sz = 4, bg_sz = 2) => {
   try {
     const config = await axios.get(CONFIG_URL);
     const cfgdata = config.data.images;
-    const imgUrlPrefix = cfgdata.base_url + cfgdata.poster_sizes[imgsize];
+    console.log(cfgdata);//test log
+    
+    const posterUrlPrefix = cfgdata.secure_base_url + cfgdata.poster_sizes[poster_sz];
+    const bgUrlPrefix = cfgdata.secure_base_url + cfgdata.backdrop_sizes[bg_sz];
 
-    return imgUrlPrefix;
+    return { posterUrlPrefix, bgUrlPrefix };
 
   } catch (errors) {
     console.error(errors);
@@ -24,12 +27,12 @@ const getMovieInfo = async (page) => {
     const imageContainer = document.querySelector('.image-container');
     imageContainer.innerHTML = '';
 
-    const imgsize = 4;//w500
-    const imgUrlPrefix = await getImgUrlPrefix(imgsize);
+    const poster_sz = 4;//w500
+    const { posterUrlPrefix } = await getImgUrlPrefix(poster_sz);
 
     const listUrl = `${BASE_URL}page=${page}&api_key=${api_key}`;
     const response = await axios.get(listUrl);
-    console.log(response);
+    console.log(response);//test log
 
     const res = response.data.results;
     const total_pages = response.data.total_pages;
@@ -48,7 +51,7 @@ const getMovieInfo = async (page) => {
 
       item.className = `movie-item`;
 
-      image.src = imgUrlPrefix + imgUrl;
+      image.src = posterUrlPrefix + imgUrl;
       image.classList.add('image');
       image.className = `img${movieid}`;
 

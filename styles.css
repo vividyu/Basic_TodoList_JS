@@ -7,17 +7,24 @@ body {
 .movie-icon {
     font-size: 50px;
     color: #333;
-    margin-right: 10px;
+    margin-bottom: 5px;
 }
 
 nav ul {
     display: flex;
+    justify-content: flex-start;
+    /* align-items: center; */
     list-style-type: none;
     padding: 0;
 }
 
 nav li {
-    margin-right: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items:center;
+    padding: 10px;
+    /* margin-right: auto; */
 }
 
 nav a {
