@@ -117,8 +117,6 @@ nav a.active {
     justify-content: flex-start;
     width: 1280px;
     height: 720px;
-
-
 }
 
 .poster-bg {
@@ -126,6 +124,7 @@ nav a.active {
     max-height: 80%;
     object-fit: contain;
     margin-left: 50px;
+    z-index: 100;
 }
 
 .text-bg {
@@ -135,6 +134,7 @@ nav a.active {
     align-items: center;
     max-width: 60%;
     max-height: 80%;
+    z-index: 100;
 }
 
 .title-bg {
@@ -160,3 +160,24 @@ nav a.active {
     color: white;
 
 }
+
+.bg-container  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* This sets the background color to black with 50% opacity */
+    z-index: 1;
+  }
+  
+  .bg-container  .overlay::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: none; /* This sets the background to transparent */
+    z-index: 2;
+  }

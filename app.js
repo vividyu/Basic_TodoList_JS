@@ -213,10 +213,10 @@ const showDetails = async (movid) => {
 
     bgContainer.style.display = 'flex';
     bgContent.style.backgroundImage = `url(${bgUrl})`;
-    bgContent.style.opacity = '0.5';
+    // bgContent.style.opacity = '0.5';
 
     poster.setAttribute('src', posterUrl);
-    poster.style.opacity = '1';
+    // poster.style.opacity = '1';
 
     // bgContent.style.opacity = '0.5';
     // poster.style.opacity = '1';
