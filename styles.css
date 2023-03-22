@@ -110,8 +110,6 @@ nav a.active {
     background-color: #fff;
 }
 
-
-
 .bg-content {
     display: flex;
     position: fixed;
@@ -156,7 +154,7 @@ nav a.active {
 .text-bg {
     padding: 10px;
     height: 98%;
-    width: 50%;
+    width: 60%;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -168,11 +166,11 @@ nav a.active {
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    font-size: 50px;
+    font-size: 30px;
     color: white;
     padding: 20px;
     height: 10%;
-    width: 80%;
+    width: 100%;
     margin-top: 20%;
     margin-bottom: 0px;
     text-align: center;
@@ -180,16 +178,21 @@ nav a.active {
 }
 
 .tags-bg {
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    font-size: 25px;
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+    font-size: 15px;
     color: white;
     padding: 20px;
     height: 5%;
     width: 80%;
     margin: 0px;
 
+}
+
+.tags-bg li {
+    padding: 6px;
+    margin: 5px;
 }
 
 .intro-bg {
@@ -203,14 +206,21 @@ nav a.active {
 }
 
 .producer-bg {
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
+    display: flex;
+    flex-direction: row;
+    list-style: none;
     font-size: 20px;
     color: white;
     padding: 20px;
     height: 10%;
     width: 80%;
     margin: 0px;
+    background-color: white;
+}
 
+.producer-bg li img {
+    max-height: 100%;
+    max-width: 100%;
+    padding: 10px;
+    z-index: 100;
 }

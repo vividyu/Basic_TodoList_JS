@@ -7,18 +7,19 @@ const BASE_URL = `https://api.themoviedb.org/3/trending/movie/week?`;
 const CONFIG_URL = `https://api.themoviedb.org/3/configuration?api_key=${api_key}`;
 const LOADING_GIF = 'https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif';
 
-const getImgUrlPrefix = async (poster_sz = 4, bg_sz = 2) => {
+const getImgUrlPrefix = async (poster_sz = 4, bg_sz = 2, logo_sz = 0) => {
   try {
     const config = await axios.get(CONFIG_URL);
     const cfgdata = config.data.images;
-    //console.log(cfgdata);//test log
+    console.log(cfgdata);//test log
 
     const posterUrlPrefix = cfgdata.secure_base_url + cfgdata.poster_sizes[poster_sz];
     const bgUrlPrefix = cfgdata.secure_base_url + cfgdata.backdrop_sizes[bg_sz];
+    const logoUrlPrefix = cfgdata.secure_base_url + cfgdata.logo_sizes[logo_sz];
 
     //console.log(bgUrlPrefix);
 
-    return { posterUrlPrefix, bgUrlPrefix };
+    return { posterUrlPrefix, bgUrlPrefix, logoUrlPrefix };
 
   } catch (errors) {
     console.error(errors);
@@ -32,7 +33,7 @@ const generatePosterFrame = async (page = 1) => {
 
     const listUrl = `${BASE_URL}page=${page}&api_key=${api_key}`;
     const response = await axios.get(listUrl);
-    console.log(response);//test log
+    //console.log(response);//test log
 
     const res = response.data.results;
     const total_pages = response.data.total_pages;
@@ -198,28 +199,74 @@ const showDetails = async (movid) => {
     const bgContent = document.querySelector('.bg-content');
     const poster = document.querySelector('.poster-bg');
 
+    const movie_title = document.querySelector('.title-bg');
+    const movie_genre = document.querySelector('.tags-bg');
+    const movie_inro = document.querySelector('.intro-bg');
+    const movie_producer = document.querySelector('.producer-bg');
+
     bgContainer.addEventListener('click', async () => {
       bgContainer.style.display = 'none';
+      movie_genre.innerHTML = '';
+      movie_producer.innerHTML = '';
     });
 
     const response = await axios.get(MOV_URL);
+    console.log(response.data); //test log
 
     let poster_sz = 4;
     let bg_sz = 2;
-    const { posterUrlPrefix, bgUrlPrefix } = await getImgUrlPrefix(poster_sz, bg_sz);
+    const { posterUrlPrefix, bgUrlPrefix, logoUrlPrefix } = await getImgUrlPrefix(poster_sz, bg_sz);
 
     const posterUrl = posterUrlPrefix + response.data.poster_path;
     const bgUrl = bgUrlPrefix + response.data.backdrop_path;
 
     bgContainer.style.display = 'flex';
     bgContent.style.backgroundImage = `url(${bgUrl})`;
-    // bgContent.style.opacity = '0.5';
-
     poster.setAttribute('src', posterUrl);
-    // poster.style.opacity = '1';
 
-    // bgContent.style.opacity = '0.5';
-    // poster.style.opacity = '1';
+    movie_title.textContent = `${response.data.original_title}(${response.data.release_date.substr(0, 4)})`;
+    movie_inro.textContent = response.data.overview;
+
+    const genreArr = response.data.genres;
+    const prodrArr = response.data.production_companies;
+
+    //console.log(genreArr); //test log
+    //console.log(prodrArr); //test log
+
+    genreArr.forEach(genre => {
+      const genre_id = genre.id;
+      const genre_name = genre.name;
+
+      const colornum = genre_id ** 4;
+      const red = (colornum >> 16) & 255; // Extract the red component
+      const green = (colornum >> 8) & 255; // Extract the green component
+      const blue = colornum & 255; // Extract the blue component
+      const color = '#' + ((1 << 24) + (red << 16) + (green << 8) + blue).toString(16).slice(1); // Combine the components into a color code
+      //console.log(color);
+
+
+      const li = document.createElement("li");
+      li.style.backgroundColor = color;
+      const text = document.createTextNode(genre_name);
+      li.appendChild(text);
+      movie_genre.appendChild(li);
+    });
+
+    prodrArr.forEach(prodr => {
+
+      const prodr_id = prodr.id;
+      const prodr_name = prodr.name;
+      const logo_path = prodr.logo_path;
+      if (logo_path == null) {
+        return;
+      }
+      const li = document.createElement("li");
+      const logo = document.createElement('img');
+      logo.src = logoUrlPrefix + logo_path;
+      li.appendChild(logo);
+      movie_producer.appendChild(li);
+    });
+
 
   } catch (errors) {
     console.error(errors);
