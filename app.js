@@ -10,7 +10,7 @@ const getImgUrlPrefix = async (poster_sz = 4, bg_sz = 2) => {
   try {
     const config = await axios.get(CONFIG_URL);
     const cfgdata = config.data.images;
-    console.log(cfgdata);//test log
+    //console.log(cfgdata);//test log
 
     const posterUrlPrefix = cfgdata.secure_base_url + cfgdata.poster_sizes[poster_sz];
     const bgUrlPrefix = cfgdata.secure_base_url + cfgdata.backdrop_sizes[bg_sz];
@@ -29,7 +29,7 @@ const generatePosterFrame = async (page = 1) => {
 
     const listUrl = `${BASE_URL}page=${page}&api_key=${api_key}`;
     const response = await axios.get(listUrl);
-    console.log(response);//test log
+    //console.log(response);//test log
 
     const res = response.data.results;
     const total_pages = response.data.total_pages;
@@ -76,7 +76,7 @@ const updateMovieInfo = async (page = 1) => {
 
     const listUrl = `${BASE_URL}page=${page}&api_key=${api_key}`;
     const response = await axios.get(listUrl);
-    console.log(response);//test log
+    //console.log(response);//test log
 
     const res = response.data.results;
     const total_pages = response.data.total_pages;
