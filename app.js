@@ -196,7 +196,7 @@ const showDetails = async (movid) => {
     const MOV_URL = `https://api.themoviedb.org/3/movie/${movid}?api_key=${api_key}&language=en-US`;
     const bgContainer = document.querySelector('.bg-container');
     const bgContent = document.querySelector('.bg-content');
-    const bg = document.querySelector('.bg');
+    const poster = document.querySelector('.poster-bg');
 
     bgContainer.addEventListener('click', async () => {
       bgContainer.style.display = 'none';
@@ -211,12 +211,15 @@ const showDetails = async (movid) => {
     const posterUrl = posterUrlPrefix + response.data.poster_path;
     const bgUrl = bgUrlPrefix + response.data.backdrop_path;
 
-    //console.log(bgUrl);//test log
-    bg.setAttribute('src', bgUrl);
-
-    //bgContainer.style.opacity = 0.5;
     bgContainer.style.display = 'flex';
+    bgContent.style.backgroundImage = `url(${bgUrl})`;
+    bgContent.style.opacity = '0.5';
 
+    poster.setAttribute('src', posterUrl);
+    poster.style.opacity = '1';
+
+    // bgContent.style.opacity = '0.5';
+    // poster.style.opacity = '1';
 
   } catch (errors) {
     console.error(errors);
