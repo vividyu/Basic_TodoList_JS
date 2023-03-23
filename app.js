@@ -283,12 +283,72 @@ const showDetails = async (movid) => {
   }
 }
 
+const listenLikeButton = async () => {
+  try {
+    const likebtnAll = document.querySelectorAll('button[class^="likebtn"]');
+
+    likebtnAll.forEach(likebtn => {
+      likebtn.addEventListener('click', async () => {
+        const movid = likebtn.className.replace(/\D/g, '');
+        //console.log(movid);
+        const likeditem = document.querySelector(`.likedlist-item-${movid}`);
+        if (likeditem == null) addToLikedList(movid);
+        else console.log(movid + " has been already added!")
+      });
+    });
+  } catch (errors) {
+    console.error(errors);
+  }
+}
+
+const addToLikedList = async (movid) => {
+  try {
+    const MOV_URL = `https://api.themoviedb.org/3/movie/${movid}?api_key=${api_key}&language=en-US`;
+    const likedlistContainer = document.querySelector('.likelist-container');
+
+    const response = await axios.get(MOV_URL);
+    console.log(response.data); //test log
+
+    let poster_sz = 4;
+    let bg_sz = 2;
+
+    const { posterUrlPrefix, bgUrlPrefix, logoUrlPrefix } = await getImgUrlPrefix(poster_sz, bg_sz);
+    const posterUrl = posterUrlPrefix + response.data.poster_path;
+    //poster.setAttribute('src', posterUrl);
+
+    const movietitle = response.data.title;
+    const movie_release_date = response.data.release_date;
+
+    const likedlist_item = document.createElement('div');
+    const image = document.createElement('img');
+    const title = document.createElement('p');
+    const release_date = document.createElement('p');
+
+    likedlist_item.className = `likedlist-item-${movid}`;
+
+    image.src = posterUrl;
+    image.className = `likedlist-image-${movid}`;
+    title.textContent = movietitle;
+    release_date.textContent = movie_release_date;
+
+
+    likedlistContainer.appendChild(likedlist_item);
+    likedlist_item.appendChild(image);
+    likedlist_item.appendChild(title);
+    likedlist_item.appendChild(release_date);
+
+  } catch (errors) {
+    console.error(errors);
+  }
+}
+
 const main = async () => {
   loadTabs();
   await generatePosterFrame();
   await updateMovieInfo();
   await pagination();
   await listenPoster();
+  await listenLikeButton();
 }
 main();
 
