@@ -1,6 +1,7 @@
 import 'regenerator-runtime/runtime';
 import axios from 'axios';
 import { consumers } from 'stream';
+const crypto = require('crypto');
 
 const api_key = "2f39ac8abf607fbbc583ce393c0f56f3";
 const BASE_URL = `https://api.themoviedb.org/3/trending/movie/week?`;
@@ -236,14 +237,9 @@ const showDetails = async (movid) => {
     genreArr.forEach(genre => {
       const genre_id = genre.id;
       const genre_name = genre.name;
-
-      const colornum = genre_id ** 4;
-      const red = (colornum >> 16) & 255; // Extract the red component
-      const green = (colornum >> 8) & 255; // Extract the green component
-      const blue = colornum & 255; // Extract the blue component
-      const color = '#' + ((1 << 24) + (red << 16) + (green << 8) + blue).toString(16).slice(1); // Combine the components into a color code
-      //console.log(color);
-
+      
+      const hash = crypto.createHash('sha256').update(genre_name).digest('hex');
+      const color = '#' + hash.substring(0, 6);
 
       const li = document.createElement("li");
       li.style.backgroundColor = color;
