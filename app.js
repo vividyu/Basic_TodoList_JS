@@ -291,7 +291,7 @@ const listenLikeButton = async () => {
       likebtn.addEventListener('click', async () => {
         const movid = likebtn.className.replace(/\D/g, '');
         //console.log(movid);
-        const likeditemAll = document.querySelectorAll(`.likedlist-item`);
+        const likeditemAll = document.querySelectorAll('div[class^="likedlist-item"]');
         let isExsit = false;
         likeditemAll.forEach(likeditem => {
           const imgid = likeditem.querySelector(`.likedlist-image-${movid}`);
@@ -331,7 +331,8 @@ const addToLikedList = async (movid) => {
     const title = document.createElement('p');
     const release_date = document.createElement('p');
 
-    likedlist_item.className = `likedlist-item`;
+    likedlist_item.className = `likedlist-item-${movid}`;
+    // likedlist_item.className = `likedlist-item`;
 
     image.src = posterUrl;
     image.className = `likedlist-image-${movid}`;
