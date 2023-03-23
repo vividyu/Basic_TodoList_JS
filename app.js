@@ -9,6 +9,29 @@ const CONFIG_URL = `https://api.themoviedb.org/3/configuration?api_key=${api_key
 const LOADING_GIF = 'https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif';
 const LIKE_ICON = 'https://cdn-icons-png.flaticon.com/512/833/833472.png';
 
+function loadTabs() {
+  const tabctrl = document.addEventListener('DOMContentLoaded', function () {
+    const tabLinks = document.querySelectorAll('.tab-link');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabLinks.forEach(link => {
+      link.addEventListener('click', function (event) {
+        event.preventDefault();
+
+        tabLinks.forEach(link => link.classList.remove('active'));
+        event.target.classList.add('active');
+
+        const tabId = event.target.getAttribute('data-tab');
+        tabContents.forEach(content => {
+          content.style.display = content.id === `tab-${tabId}` ? 'block' : 'none';
+        });
+      });
+    });
+    // Activate the first tab by default
+    tabLinks[0].click();
+  });
+}
+
 const getImgUrlPrefix = async (poster_sz = 4, bg_sz = 2, logo_sz = 0) => {
   try {
     const config = await axios.get(CONFIG_URL);
@@ -123,7 +146,6 @@ const updateMovieInfo = async (page = 1) => {
   }
 };
 
-
 const pagination = async () => {
   try {
     const prevButton = document.getElementById('prev-button');
@@ -162,30 +184,6 @@ const pagination = async () => {
   } catch (errors) {
     console.error(errors);
   }
-
-}
-
-function loadTabs() {
-  const tabctrl = document.addEventListener('DOMContentLoaded', function () {
-    const tabLinks = document.querySelectorAll('.tab-link');
-    const tabContents = document.querySelectorAll('.tab-content');
-
-    tabLinks.forEach(link => {
-      link.addEventListener('click', function (event) {
-        event.preventDefault();
-
-        tabLinks.forEach(link => link.classList.remove('active'));
-        event.target.classList.add('active');
-
-        const tabId = event.target.getAttribute('data-tab');
-        tabContents.forEach(content => {
-          content.style.display = content.id === `tab-${tabId}` ? 'block' : 'none';
-        });
-      });
-    });
-    // Activate the first tab by default
-    tabLinks[0].click();
-  });
 
 }
 
