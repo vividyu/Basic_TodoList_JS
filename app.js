@@ -7,12 +7,13 @@ const api_key = "2f39ac8abf607fbbc583ce393c0f56f3";
 const BASE_URL = `https://api.themoviedb.org/3/trending/movie/week?`;
 const CONFIG_URL = `https://api.themoviedb.org/3/configuration?api_key=${api_key}`;
 const LOADING_GIF = 'https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif';
+const LIKE_ICON = 'https://cdn-icons-png.flaticon.com/512/833/833472.png';
 
 const getImgUrlPrefix = async (poster_sz = 4, bg_sz = 2, logo_sz = 0) => {
   try {
     const config = await axios.get(CONFIG_URL);
     const cfgdata = config.data.images;
-    console.log(cfgdata);//test log
+    //console.log(cfgdata);//test log
 
     const posterUrlPrefix = cfgdata.secure_base_url + cfgdata.poster_sizes[poster_sz];
     const bgUrlPrefix = cfgdata.secure_base_url + cfgdata.backdrop_sizes[bg_sz];
@@ -45,8 +46,15 @@ const generatePosterFrame = async (page = 1) => {
       const image = document.createElement('img');
       const title = document.createElement('p');
       const release_date = document.createElement('p');
+      const like_button = document.createElement('button');
+      const like_icon = document.createElement('img');
 
       item.className = `movie-item`;
+
+
+      like_icon.src = LIKE_ICON;
+      image.classList.add('image');
+      like_button.className = `likebtn`;
 
       image.src = LOADING_GIF;
       image.classList.add('image');
@@ -59,6 +67,8 @@ const generatePosterFrame = async (page = 1) => {
       release_date.className = `release-date`;
 
       imageContainer.appendChild(item);
+      item.appendChild(like_button);
+      like_button.appendChild(like_icon);
       item.appendChild(image);
       item.appendChild(title);
       item.appendChild(release_date);
@@ -94,12 +104,15 @@ const updateMovieInfo = async (page = 1) => {
       const movietitle = res[i].title;
       const movie_release_date = res[i].release_date;
       const movieItemAll = document.querySelectorAll('.movie-item');
-      const poster = movieItemAll[i].querySelector('img');
+      const poster = movieItemAll[i].querySelector('img[class^="img"]');
+      if (poster == null) console.log("null at" + i);//test log
       const title = movieItemAll[i].querySelector('.movie-title');
       const release_date = movieItemAll[i].querySelector('.release-date');
+      const likebtn = movieItemAll[i].querySelector('button[class^="likebtn"]');
 
       poster.src = posterUrlPrefix + imgUrl;
       poster.className = `img${movieid}`;
+      likebtn.className = `likebtn${movieid}`;
 
       title.textContent = movietitle;
       release_date.textContent = movie_release_date;
@@ -178,8 +191,9 @@ function loadTabs() {
 
 const listenPoster = async () => {
   try {
-    const imageContainer = document.querySelector('.image-container');
-    const posterAll = imageContainer.querySelectorAll('img');
+    // const imageContainer = document.querySelector('.image-container');
+    // const posterAll = imageContainer.querySelectorAll('img');
+    const posterAll = document.querySelectorAll('img[class^="img"]');
 
     posterAll.forEach(poster => {
       poster.addEventListener('click', async () => {
@@ -212,7 +226,7 @@ const showDetails = async (movid) => {
     });
 
     const response = await axios.get(MOV_URL);
-    console.log(response.data); //test log
+    //console.log(response.data); //test log
 
     let poster_sz = 4;
     let bg_sz = 2;
@@ -237,7 +251,7 @@ const showDetails = async (movid) => {
     genreArr.forEach(genre => {
       const genre_id = genre.id;
       const genre_name = genre.name;
-      
+
       const hash = crypto.createHash('sha256').update(genre_name).digest('hex');
       const color = '#' + hash.substring(0, 6);
 
