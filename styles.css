@@ -313,11 +313,15 @@ nav a.active {
 
 .draglist {
     list-style: none;
+    text-align: center;
+    width: 80%;
 }
 
 .draglist li {
     margin: 5px;
-    font-size: 60px;
+    font-size: 30px;
+    border-radius: 20px;
+    background-color: rgb(226, 215, 215);
 }
 
 .draglist-close {

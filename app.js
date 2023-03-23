@@ -349,7 +349,7 @@ const addToLikedList = async (movid) => {
 
     const draglist = document.querySelector('.draglist');
     const li = document.createElement("li");
-    li.style.backgroundColor = 'gray';
+    // li.style.backgroundColor = 'gray';
     const text = document.createTextNode(movietitle);
     li.appendChild(text);
     draglist.appendChild(li);
@@ -389,5 +389,3 @@ const main = async () => {
   await listenLikedListCfgAndClose();
 }
 main();
-
-
