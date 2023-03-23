@@ -189,8 +189,8 @@ nav a.active {
     align-items: center;
     font-size: 30px;
     color: white;
-    padding: 20px;
-    height: 10%;
+    padding: 0px;
+    height: 6%;
     width: 100%;
     margin-top: 20%;
     margin-bottom: 0px;
@@ -220,7 +220,7 @@ nav a.active {
     font-size: 20px;
     color: white;
     padding: 20px;
-    height: 20%;
+    height: 30%;
     width: 80%;
     margin: 0px;
 

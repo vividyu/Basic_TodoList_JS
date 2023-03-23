@@ -314,7 +314,7 @@ const addToLikedList = async (movid) => {
     const likedlistContainer = document.querySelector('.likelist-container');
 
     const response = await axios.get(MOV_URL);
-    console.log(response.data); //test log
+    //console.log(response.data); //test log
 
     let poster_sz = 4;
     let bg_sz = 2;
