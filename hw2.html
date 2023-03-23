@@ -20,9 +20,6 @@
             <li><a href="#" class="tab-link" data-tab="2">Liked List</a></li>
         </ul>
     </nav>
-
-
-
     <div class="tab-content-container">
         <div class="tab-content" id="tab-1">
             <h2>The Trending Movies This Week</h2>
@@ -55,11 +52,17 @@
                         <ul class="producer-bg"></ul>
                     </div>
                 </div>
-
             </div>
         </div>
         <div class="tab-content" id="tab-2">
-            <div class="likelist-container"></div>
+            <div class="likedlist-container"></div>
+            <button class="likedlist-cfg"></button>
+            <div class="draglist-container">
+                <button class="draglist-close">
+                    <i class="fas fa-times-circle" style="color: #e62e19;"></i>
+                </button>
+                <ul class="draglist"></ul>
+            </div>
         </div>
     </div>
     <script src="app.js"></script>

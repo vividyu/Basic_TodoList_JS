@@ -311,7 +311,7 @@ const listenLikeButton = async () => {
 const addToLikedList = async (movid) => {
   try {
     const MOV_URL = `https://api.themoviedb.org/3/movie/${movid}?api_key=${api_key}&language=en-US`;
-    const likedlistContainer = document.querySelector('.likelist-container');
+    const likedlistContainer = document.querySelector('.likedlist-container');
 
     const response = await axios.get(MOV_URL);
     //console.log(response.data); //test log
@@ -342,12 +342,30 @@ const addToLikedList = async (movid) => {
     release_date.textContent = movie_release_date;
     release_date.className = `likedlist-release-date`;
 
-
-
     likedlistContainer.appendChild(likedlist_item);
     likedlist_item.appendChild(image);
     likedlist_item.appendChild(title);
     likedlist_item.appendChild(release_date);
+
+    const draglist = document.querySelector('.draglist');
+    const li = document.createElement("li");
+    li.style.backgroundColor = 'gray';
+    const text = document.createTextNode(movietitle);
+    li.appendChild(text);
+    draglist.appendChild(li);
+
+  } catch (errors) {
+    console.error(errors);
+  }
+}
+
+const listenLikedListCfg = async () => {
+  try {
+    const LikedListCfg = document.querySelector('.likedlist-cfg');
+    LikedListCfg.addEventListener('click', async () => {
+      const draglistContainer = document.querySelector('.draglist-container');
+      draglistContainer.style.display = 'flex';
+    });
 
   } catch (errors) {
     console.error(errors);
@@ -361,6 +379,7 @@ const main = async () => {
   await pagination();
   await listenPoster();
   await listenLikeButton();
+  await listenLikedListCfg();
 }
 main();
 
