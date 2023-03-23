@@ -359,12 +359,19 @@ const addToLikedList = async (movid) => {
   }
 }
 
-const listenLikedListCfg = async () => {
+const listenLikedListCfgAndClose = async () => {
   try {
     const LikedListCfg = document.querySelector('.likedlist-cfg');
+    const LikedListClose = document.querySelector('.draglist-close');
+
     LikedListCfg.addEventListener('click', async () => {
       const draglistContainer = document.querySelector('.draglist-container');
       draglistContainer.style.display = 'flex';
+    });
+
+    LikedListClose.addEventListener('click', async () => {
+      const draglistContainer = document.querySelector('.draglist-container');
+      draglistContainer.style.display = 'none';
     });
 
   } catch (errors) {
@@ -379,7 +386,7 @@ const main = async () => {
   await pagination();
   await listenPoster();
   await listenLikeButton();
-  await listenLikedListCfg();
+  await listenLikedListCfgAndClose();
 }
 main();
 
