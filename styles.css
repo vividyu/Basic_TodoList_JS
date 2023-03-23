@@ -250,3 +250,33 @@ nav a.active {
     display: flex;
     flex-wrap: wrap;
 }
+
+.likedlist-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    width: 15%;
+    object-fit: cover;
+    margin: 10px;
+}
+
+.likedlist-item img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.likedlist-title {
+    font-weight: bold;
+    font-family: "Times New Roman", Times, serif;
+    font-size: medium;
+    margin: 0px;
+}
+
+.likedlist-release-date {
+    font-family: "Times New Roman", Times, serif;
+    font-size: small;
+    margin: 0px;
+}

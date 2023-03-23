@@ -291,9 +291,16 @@ const listenLikeButton = async () => {
       likebtn.addEventListener('click', async () => {
         const movid = likebtn.className.replace(/\D/g, '');
         //console.log(movid);
-        const likeditem = document.querySelector(`.likedlist-item-${movid}`);
-        if (likeditem == null) addToLikedList(movid);
-        else console.log(movid + " has been already added!")
+        const likeditemAll = document.querySelectorAll(`.likedlist-item`);
+        let isExsit = false;
+        likeditemAll.forEach(likeditem => {
+          const imgid = likeditem.querySelector(`.likedlist-image-${movid}`);
+          if (imgid != null) isExsit = true;
+        });
+        if (!isExsit) {
+          addToLikedList(movid);
+        }
+        else { console.log(movid + " has been already added!"); }
       });
     });
   } catch (errors) {
@@ -324,12 +331,17 @@ const addToLikedList = async (movid) => {
     const title = document.createElement('p');
     const release_date = document.createElement('p');
 
-    likedlist_item.className = `likedlist-item-${movid}`;
+    likedlist_item.className = `likedlist-item`;
 
     image.src = posterUrl;
     image.className = `likedlist-image-${movid}`;
+
     title.textContent = movietitle;
+    title.className = `likedlist-title`;
+
     release_date.textContent = movie_release_date;
+    release_date.className = `likedlist-release-date`;
+
 
 
     likedlistContainer.appendChild(likedlist_item);
