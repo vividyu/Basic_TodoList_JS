@@ -81,6 +81,7 @@ nav a.active {
 }
 
 .movie-item button {
+    display: none;
     position: absolute;
     top: 0;
     right: 0;
@@ -95,9 +96,9 @@ nav a.active {
     opacity: 0.9;
 }
 
-/* .movie-item button:hover {
+.movie-item:hover button {
     display: inline-block;
-} */
+}
 
 /* Style the images */
 .movie-item img {
