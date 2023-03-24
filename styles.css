@@ -122,6 +122,7 @@ nav li.active {
     background-color: #f1f1f1;
     border: none;
     opacity: 0.9;
+    background: transparent;
 }
 
 .movie-item:hover button {

@@ -348,7 +348,8 @@ const addToLikedList = async (movid) => {
 
     const draglist = document.querySelector('.draglist');
     const li = document.createElement("li");
-    // li.style.backgroundColor = 'gray';
+    li.className = `draglist-li-${movid}`;
+
     const text = document.createTextNode(movietitle);
     li.appendChild(text);
     draglist.appendChild(li);
@@ -387,6 +388,25 @@ const listenLikedListCfgAndClose = async () => {
     console.error(errors);
   }
 }
+
+const sortableLibMethod = async () => {
+  const sortableList = document.querySelector('.draglist');
+  const divContainer = document.querySelector('.likedlist-container');
+  
+  Sortable.create(sortableList, {
+    animation: 150,
+    onUpdate: function (evt) {
+      const item = evt.item;
+      const newIndex = evt.newIndex;
+  
+      const divId = item.getAttribute("data-div-id");
+      const div = document.getElementById(divId);
+  
+      divContainer.insertBefore(div, divContainer.children[newIndex]);
+    }
+  });
+}
+
 
 const main = async () => {
   loadTabs();
