@@ -353,6 +353,16 @@ const addToLikedList = async (movid) => {
     li.appendChild(text);
     draglist.appendChild(li);
 
+    const count = draglist.querySelectorAll('li').length;;
+    const likedlist_count = document.querySelector('.likedlist-count');
+    if (count > 0) {
+      likedlist_count.textContent = `(${count})`;
+    } else if (count > 99) {
+      likedlist_count.textContent = `(99+)`;
+    } else {
+      throw new Error("count=" + count);
+    }
+
   } catch (errors) {
     console.error(errors);
   }

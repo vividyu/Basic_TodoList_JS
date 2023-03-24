@@ -28,6 +28,15 @@ nav li {
     max-height: 100%;
 }
 
+
+nav li p {
+    pointer-events: none;
+}
+
+nav li>div {
+    pointer-events: none;
+}
+
 .tab-link {
     font-family: "Times New Roman", Times, serif;
     text-decoration: none;
@@ -39,8 +48,6 @@ nav li {
     width: 100px;
     margin-left: 20px;
     margin-right: 10px;
-    z-index: 999;
-
 }
 
 .likedlist-count {
