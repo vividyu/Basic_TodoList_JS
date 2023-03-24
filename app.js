@@ -377,6 +377,7 @@ const listenLikedListCfgAndClose = async () => {
     LikedListCfg.addEventListener('click', async () => {
       const draglistContainer = document.querySelector('.draglist-container');
       draglistContainer.style.display = 'flex';
+      await listenDragList();
     });
 
     LikedListClose.addEventListener('click', async () => {
@@ -390,53 +391,69 @@ const listenLikedListCfgAndClose = async () => {
 }
 
 const listenDragList = async () => {
-  const list = document.getElementById("myList");
-  const divs = document.getElementById("div-container");
-  let draggedItem;
-  // Set draggable attribute and event listeners for list items
-  list.querySelectorAll(".list-item").forEach((item) => {
-    item.setAttribute("draggable", "true");
-    item.addEventListener("dragstart", handleDragStart);
-    item.addEventListener("dragover", handleDragOver);
-    item.addEventListener("drop", handleDrop);
-    item.addEventListener("dragend", handleDragEnd);
-  });
-  
-  function handleDragStart(e) {
-    draggedItem = e.target;
-    e.dataTransfer.effectAllowed = "move";
-    e.dataTransfer.setData("text/plain", draggedItem.textContent);
-  }
-  
-  function handleDragOver(e) {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = "move";
-  }
-  
-  function handleDrop(e) {
-    e.stopPropagation();
-    if (draggedItem !== e.target) {
-      list.insertBefore(draggedItem, e.target.nextSibling);
-      reorderDivs();
+  try {
+    const list = document.querySelector('.draglist');
+    const divs = document.querySelector('.likedlist-container');
+
+    //draglist-li-804150
+    //likedlist-item-804150
+
+    let draggedItem;
+    // Set draggable attribute and event listeners for list items
+    list.querySelectorAll('li').forEach((item) => {
+      //console.log("listenDragList(): " + item.className);
+
+      item.setAttribute("draggable", "true");
+      item.addEventListener("dragstart", handleDragStart);
+      item.addEventListener("dragover", handleDragOver);
+      item.addEventListener("drop", handleDrop);
+      item.addEventListener("dragend", handleDragEnd);
+    });
+
+    function handleDragStart(e) {
+      draggedItem = e.target;
+
+      e.dataTransfer.effectAllowed = "move";
+      e.dataTransfer.setData("text/plain", draggedItem.textContent);
     }
-    return false;
+
+    function handleDragOver(e) {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = "move";
+    }
+
+    function handleDrop(e) {
+      e.stopPropagation();
+      if (draggedItem != null && draggedItem !== e.target) {
+        //console.log("handleDrop(): draggedItem=" + draggedItem.className);
+        //console.log("handleDrop(): e.target=" + e.target.className);
+        list.insertBefore(draggedItem, e.target.nextSibling);
+        reorderDivs();
+      }
+      return false;
+    }
+
+    function handleDragEnd() {
+      draggedItem = null;
+    }
+
+    function reorderDivs() {
+      const currentOrder = Array.from(list.children).map(
+        //(item) => item.textContent
+        (item) => item.className.replace(/\D/g, '')
+      );
+
+      //console.log(currentOrder);
+
+      const orderedDivs = currentOrder.map((movid) =>
+        divs.querySelector(`.likedlist-item-${movid}`)
+      );
+      divs.innerHTML = "";
+      orderedDivs.forEach((div) => divs.appendChild(div));
+    }
+  } catch (errors) {
+    console.error(errors);
   }
-  
-  function handleDragEnd() {
-    draggedItem = null;
-  }
-  
-  function reorderDivs() {
-    const currentOrder = Array.from(list.children).map(
-      (item) => item.textContent
-    );
-    const orderedDivs = currentOrder.map((text) =>
-      divs.querySelector(`#div${text.split(" ")[1]}`)
-    );
-    divs.innerHTML = "";
-    orderedDivs.forEach((div) => divs.appendChild(div));
-  }
-  
 }
 
 
@@ -448,5 +465,6 @@ const main = async () => {
   await listenPoster();
   await listenLikeButton();
   await listenLikedListCfgAndClose();
+
 }
 main();
