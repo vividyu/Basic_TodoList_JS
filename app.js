@@ -389,22 +389,54 @@ const listenLikedListCfgAndClose = async () => {
   }
 }
 
-const sortableLibMethod = async () => {
-  const sortableList = document.querySelector('.draglist');
-  const divContainer = document.querySelector('.likedlist-container');
-  
-  Sortable.create(sortableList, {
-    animation: 150,
-    onUpdate: function (evt) {
-      const item = evt.item;
-      const newIndex = evt.newIndex;
-  
-      const divId = item.getAttribute("data-div-id");
-      const div = document.getElementById(divId);
-  
-      divContainer.insertBefore(div, divContainer.children[newIndex]);
-    }
+const listenDragList = async () => {
+  const list = document.getElementById("myList");
+  const divs = document.getElementById("div-container");
+  let draggedItem;
+  // Set draggable attribute and event listeners for list items
+  list.querySelectorAll(".list-item").forEach((item) => {
+    item.setAttribute("draggable", "true");
+    item.addEventListener("dragstart", handleDragStart);
+    item.addEventListener("dragover", handleDragOver);
+    item.addEventListener("drop", handleDrop);
+    item.addEventListener("dragend", handleDragEnd);
   });
+  
+  function handleDragStart(e) {
+    draggedItem = e.target;
+    e.dataTransfer.effectAllowed = "move";
+    e.dataTransfer.setData("text/plain", draggedItem.textContent);
+  }
+  
+  function handleDragOver(e) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "move";
+  }
+  
+  function handleDrop(e) {
+    e.stopPropagation();
+    if (draggedItem !== e.target) {
+      list.insertBefore(draggedItem, e.target.nextSibling);
+      reorderDivs();
+    }
+    return false;
+  }
+  
+  function handleDragEnd() {
+    draggedItem = null;
+  }
+  
+  function reorderDivs() {
+    const currentOrder = Array.from(list.children).map(
+      (item) => item.textContent
+    );
+    const orderedDivs = currentOrder.map((text) =>
+      divs.querySelector(`#div${text.split(" ")[1]}`)
+    );
+    divs.innerHTML = "";
+    orderedDivs.forEach((div) => divs.appendChild(div));
+  }
+  
 }
 
 
