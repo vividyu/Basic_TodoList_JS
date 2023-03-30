@@ -74,7 +74,24 @@ nav li.active {
 
 .tab-content {
     display: none;
+    /* rotation */
+    backface-visibility: hidden;
+    transform-origin: center;
+    transition: transform 0.5s;
 }
+
+.tab-content.visible {
+    display: block;
+}
+
+.tab-content.rotate-out {
+    transform: rotateY(180deg);
+}
+
+.tab-content.rotate-in {
+    transform: rotateY(-180deg);
+}
+
 
 .button-container {
     display: flex;

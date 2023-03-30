@@ -10,7 +10,7 @@ const LOADING_GIF = 'https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif'
 const LIKE_ICON = 'https://cdn-icons-png.flaticon.com/512/833/833472.png';
 
 function loadTabs() {
-  const tabctrl = document.addEventListener('DOMContentLoaded', function () {
+  const tabctrl = document.addEventListener('DOMContentLoaded', () => {
     const tabLinks = document.querySelectorAll('.tab-link');
     const tabContents = document.querySelectorAll('.tab-content');
 
@@ -18,13 +18,36 @@ function loadTabs() {
       link.addEventListener('click', function (event) {
         event.preventDefault();
 
+        //const targetId = tab.dataset.target;
+
+
         tabLinks.forEach(link => link.classList.remove('active'));
         event.target.classList.add('active');
 
         const tabId = event.target.getAttribute('data-tab');
+        const targetContent = document.getElementById(`tab-${tabId}`);
+        console.log(tabId);
+        console.log(targetContent);
+
         tabContents.forEach(content => {
           content.style.display = content.id === `tab-${tabId}` ? 'block' : 'none';
         });
+
+        // Hide currently visible content
+        tabContents.forEach((content) => {
+          if (content.classList.contains("visible")) {
+            content.classList.add("rotate-out");
+            setTimeout(() => {
+              content.classList.remove("visible", "rotate-out");
+            }, 500);
+          }
+        });
+        // Show target content
+        targetContent.classList.add("visible", "rotate-in");
+        setTimeout(() => {
+          targetContent.classList.remove("rotate-in");
+        }, 500);
+
       });
     });
     // Activate the first tab by default
