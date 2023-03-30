@@ -18,9 +18,6 @@ function loadTabs() {
       link.addEventListener('click', function (event) {
         event.preventDefault();
 
-        //const targetId = tab.dataset.target;
-
-
         tabLinks.forEach(link => link.classList.remove('active'));
         event.target.classList.add('active');
 
@@ -228,6 +225,16 @@ const listenPoster = async () => {
   }
 }
 
+const closeDetail = () => {
+  const bgContainer = document.querySelector('.bg-container');
+  const movie_genre = document.querySelector('.tags-bg');
+  const movie_producer = document.querySelector('.producer-bg');
+
+  bgContainer.style.display = 'none';
+  movie_genre.innerHTML = '';
+  movie_producer.innerHTML = '';
+}
+
 const showDetails = async (movid) => {
   try {
     const MOV_URL = `https://api.themoviedb.org/3/movie/${movid}?api_key=${api_key}&language=en-US`;
@@ -241,9 +248,7 @@ const showDetails = async (movid) => {
     const movie_producer = document.querySelector('.producer-bg');
 
     bgContainer.addEventListener('click', async () => {
-      bgContainer.style.display = 'none';
-      movie_genre.innerHTML = '';
-      movie_producer.innerHTML = '';
+      closeDetail();
     });
 
     const response = await axios.get(MOV_URL);
@@ -321,7 +326,7 @@ const listenLikeButton = async () => {
         if (!isExsit) {
           addToLikedList(movid);
         }
-        else { console.log(movid + " has been already added!"); }
+        else { console.log(movid + " has already been added!"); }
       });
     });
   } catch (errors) {
