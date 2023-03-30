@@ -26,8 +26,8 @@ function loadTabs() {
 
         const tabId = event.target.getAttribute('data-tab');
         const targetContent = document.getElementById(`tab-${tabId}`);
-        console.log(tabId);
-        console.log(targetContent);
+        //console.log(tabId);
+        //console.log(targetContent);
 
         tabContents.forEach(content => {
           content.style.display = content.id === `tab-${tabId}` ? 'block' : 'none';
