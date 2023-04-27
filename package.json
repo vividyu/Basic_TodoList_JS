@@ -5,8 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "parcel hw2.html",
-    "build": "parcel build hw2.html"
+    "dev": "parcel todolist.html",
+    "build": "parcel build todolist.html"
   },
   "keywords": [],
   "author": "",
