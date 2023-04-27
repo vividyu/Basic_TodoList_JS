@@ -1,7 +1,7 @@
 {
-  "name": "usc_hw2",
+  "name": "todolist",
   "version": "1.0.0",
-  "description": "https://github.com/vividyu/usc_hw2",
+  "description": "todolist",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

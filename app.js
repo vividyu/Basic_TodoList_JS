@@ -1,13 +1,8 @@
 import 'regenerator-runtime/runtime';
 import axios from 'axios';
-import { consumers } from 'stream';
 const crypto = require('crypto');
 
-const api_key = "2f39ac8abf607fbbc583ce393c0f56f3";
-const BASE_URL = `https://api.themoviedb.org/3/trending/movie/week?`;
-const CONFIG_URL = `https://api.themoviedb.org/3/configuration?api_key=${api_key}`;
-const LOADING_GIF = 'https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif';
-const LIKE_ICON = 'https://cdn-icons-png.flaticon.com/512/833/833472.png';
+
 
 function loadTabs() {
   const tabctrl = document.addEventListener('DOMContentLoaded', () => {
@@ -483,16 +478,12 @@ const listenDragList = async () => {
     console.error(errors);
   }
 }
+//////////////////////////////////////////////////
 
 
 const main = async () => {
-  loadTabs();
-  await generatePosterFrame();
-  await updateMovieInfo();
-  await pagination();
-  await listenPoster();
-  await listenLikeButton();
-  await listenLikedListCfgAndClose();
+
+
 
 }
 main();
