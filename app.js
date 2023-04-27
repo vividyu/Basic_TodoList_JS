@@ -49,6 +49,9 @@ const listenAddTodos = async () => {
         }
         todoItem.remove();
       });
+
+      InputTodos.value = "";
+
     });
 
   } catch (errors) {
@@ -58,7 +61,5 @@ const listenAddTodos = async () => {
 
 const main = async () => {
   listenAddTodos();
-
-
 }
 main();

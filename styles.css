@@ -1,10 +1,18 @@
+.todolist-container{
+  width: 30%;
+}
+
 .todos-list{
+  width: 90%;
     list-style-type: none;
 }
 
-.todos-item{
-    display: flex;
+.todos-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
+
 
 .todo-text {
     color: blue;
