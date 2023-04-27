@@ -5,3 +5,19 @@
 .todos-item{
     display: flex;
 }
+
+.todo-text {
+    color: blue;
+    font-size: 16px;
+  }
+  
+  .line-through {
+    text-decoration: line-through;
+  }
+  
+  .todo-text.line-through {
+    color: blue;
+    font-size: 16px;
+    text-decoration: line-through;
+  }
+  
