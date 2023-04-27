@@ -1,0 +1,7 @@
+.todos-list{
+    list-style-type: none;
+}
+
+.todos-item{
+    display: flex;
+}
