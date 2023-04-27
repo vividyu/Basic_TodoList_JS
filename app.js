@@ -1,8 +1,5 @@
 import 'regenerator-runtime/runtime';
-import axios from 'axios';
-const crypto = require('crypto');
 
-//////////////////////////////////////////////////
 const listenAddTodos = async () => {
   try {
     const AddTodos = document.querySelector('#add-todos');
